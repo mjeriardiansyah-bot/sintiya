@@ -1,0 +1,207 @@
+/* ===== RESET & BASE ===== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --choco-light: #f8f0ea;
+    --choco-cream: #fdfaf7;
+    --choco-milk: #dccfc4;
+    --choco-dark: #6b4c34;
+    --choco-brown: #a67c5b;
+    --choco-deep: #4d3422;
+    --choco-gold: #c8a68b;
+    --love-red: #c0392b;
+    --love-soft: #e8c4b8;
+
+    --shadow-soft: 0 8px 32px rgba(90, 60, 40, 0.10);
+    --shadow-medium: 0 16px 48px rgba(90, 60, 40, 0.14);
+    --shadow-heavy: 0 24px 64px rgba(90, 60, 40, 0.18);
+
+    --radius-card: 48px;
+    --radius-inner: 32px;
+
+    --transition-smooth:
+        all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+
+/* ===== BODY ===== */
+
+body {
+    background: var(--choco-light);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 2rem;
+
+    background-image:
+        radial-gradient(
+            ellipse at 20% 50%,
+            rgba(166, 124, 91, 0.04) 0%,
+            transparent 60%
+        ),
+        radial-gradient(
+            ellipse at 80% 20%,
+            rgba(192, 57, 43, 0.03) 0%,
+            transparent 50%
+        );
+}
+
+
+/* ===== CARD UTAMA ===== */
+
+.love-card {
+    max-width: 1240px;
+    width: 100%;
+
+    background: var(--choco-cream);
+
+    border-radius: var(--radius-card);
+
+    box-shadow:
+        var(--shadow-heavy),
+        0 0 0 1px rgba(166, 124, 91, 0.08);
+
+    padding: 2.8rem 3rem 3rem;
+
+    position: relative;
+    overflow: hidden;
+
+    transition: var(--transition-smooth);
+}
+
+
+/* ===== HIASAN COKLAT ===== */
+
+.choco-deco {
+    position: absolute;
+    pointer-events: none;
+
+    opacity: 0.04;
+    font-size: 8rem;
+}
+
+.choco-deco-1 {
+    top: -30px;
+    right: -30px;
+
+    transform: rotate(20deg);
+
+    font-size: 14rem;
+}
+
+.choco-deco-2 {
+    bottom: -40px;
+    left: -40px;
+
+    transform: rotate(-15deg);
+
+    font-size: 16rem;
+}
+
+.choco-deco-3 {
+    top: 40%;
+    right: 10px;
+
+    font-size: 4rem;
+    opacity: 0.02;
+
+    transform: rotate(45deg);
+}
+
+.choco-deco-4 {
+    bottom: 20%;
+    left: 20px;
+
+    font-size: 3.5rem;
+    opacity: 0.02;
+
+    transform: rotate(-30deg);
+}
+
+.choco-deco-5 {
+    top: 20%;
+    left: 10%;
+
+    font-size: 2rem;
+    opacity: 0.015;
+}
+
+
+/* ===== SPRINKLES ===== */
+
+.sprinkles {
+    position: absolute;
+    pointer-events: none;
+    opacity: 0.06;
+}
+
+.sprinkles span {
+    display: inline-block;
+
+    width: 12px;
+    height: 4px;
+
+    border-radius: 4px;
+
+    background: var(--choco-brown);
+
+    position: absolute;
+}
+
+.sprinkles span:nth-child(1) {
+    top: 15%;
+    left: 5%;
+
+    transform: rotate(30deg);
+
+    width: 18px;
+}
+
+.sprinkles span:nth-child(2) {
+    top: 25%;
+    right: 8%;
+
+    transform: rotate(-45deg);
+
+    width: 14px;
+
+    background: var(--love-red);
+}
+
+.sprinkles span:nth-child(3) {
+    bottom: 30%;
+    left: 3%;
+
+    transform: rotate(60deg);
+
+    width: 20px;
+}
+
+.sprinkles span:nth-child(4) {
+    bottom: 20%;
+    right: 5%;
+
+    transform: rotate(-20deg);
+
+    width: 16px;
+
+    background: var(--love-red);
+}
+
+.sprinkles span:nth-child(5) {
+    top: 60%;
+    left: 15%;
+
+    transform: rotate(80deg);
+
+    width: 12px;
+}

@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday, Sayang</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<script>
+  // ======================= GANTI DI SINI =======================
+  const COUPLE_NAME   = "Fatma Sintiya";      // nama pacarmu
+  const BIRTH_YEAR    = "2011";        // tahun lahir pacarmu (4 digit, sebagai kunci pembuka surat)
+  const DEFAULT_MESSAGE = "Selamat ulang tahun, cintaku. Makasih udah selalu ada, sabar hadapin aku, dan bikin setiap hari terasa lebih hangat. Semoga tahun ini penuh hal-hal baik buat kamu, sehat terus, bahagia terus, dan makin banyak alasan buat senyum. Aku sayang kamu, lebih dari yang bisa aku tulis di sini. 🤍";
+  // ===============================================================
+</script>
+
+<style>
+  :root{
+    --cream: #FFF4EC;
+    --blush: #F6C9CE;
+    --rose: #C1516B;
+    --rose-deep: #8B3A55;
+    --plum: #3D1F33;
+    --gold: #D9A441;
+    --ink: #4A2A3B;
+    --font-display: 'Cormorant Garamond', serif;
+    --font-body: 'Quicksand', sans-serif;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html, body{
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    font-family: var(--font-body);
+    color: var(--ink);
+    background: radial-gradient(circle at 20% 15%, var(--blush) 0%, var(--cream) 55%);
+    overflow-x: hidden;
+  }
+
+  .screen{
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 20px 56px;
+    text-align: center;
+  }
+
+  .hidden{ display: none !important; }
+
+  /* ---------- ENVELOPE SCREEN ---------- */
+
+  .env-eyebrow{
+    font-size: 14px;
+    color: var(--rose-deep);
+    font-weight: 600;
+    margin: 0 0 6px;
+  }
+
+  .env-title{
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(28px, 7vw, 38px);
+    color: var(--plum);
+    margin: 0 0 26px;
+  }
+
+  .envelope{
+    position: relative;
+    width: 250px;
+    height: 160px;
+    margin-bottom: 30px;
+  }
+
+  .envelope-body{
+    position: absolute;
+    inset: 0;
+    background: var(--cream);
+    border: 2px solid var(--rose-deep);
+    border-radius: 6px;
+  }
+
+  .envelope-flap{
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    width: 0;
+    height: 0;
+    border-left: 127px solid transparent;
+    border-right: 127px solid transparent;
+    border-top: 82px solid var(--rose);
+    filter: drop-shadow(0 1px 0 var(--rose-deep));
+  }
+
+  .envelope-seal{
+    position: absolute;
+    top: 58px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 42px;
+    height: 42px;
+    background: var(--gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: var(--cream);
+    box-shadow: 0 4px 10px rgba(139,58,85,0.35);
+  }
+
+  .envelope-lines{
+    position: absolute;
+    bottom: 20px;
+    left: 30px;
+    right: 30px;
+  }
+  .envelope-lines span{
+    display: block;
+    height: 2px;
+    background: var(--blush);
+    margin-bottom: 10px;
+    border-radius: 2px;
+  }
+  .envelope-lines span:last-child{ width: 60%; }
+
+  .env-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .env-label{
+    font-size: 14px;
+    color: var(--ink);
+    max-width: 260px;
+  }
+
+  .year-input{
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 20px;
+    letter-spacing: 3px;
+    text-align: center;
+    width: 150px;
+    padding: 12px 10px;
+    border: 2px solid var(--blush);
+    border-radius: 12px;
+    background: #FFFDFB;
+    color: var(--plum);
+    outline: none;
+  }
+
+  .year-input:focus{ border-color: var(--rose); }
+
+  .env-btn{
+    margin-top: 4px;
+    background: var(--rose);
+    color: #fff;
+    border: none;
+    padding: 13px 32px;
+    border-radius: 999px;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition: transform .15s ease, background .2s ease;
+  }
+  .env-btn:hover{ background: var(--rose-deep); }
+  .env-btn:active{ transform: scale(0.96); }
+
+  .env-hint{
+    min-height: 18px;
+    font-size: 13px;
+    color: var(--rose-deep);
+    opacity: 0;
+    transition: opacity .3s ease;
+  }
+  .env-hint.show{ opacity: 1; }
+
+  .shake-anim{ animation: shakeInput 0.4s; }
+  @keyframes shakeInput{
+    0%, 100%{ transform: translateX(0); }
+    25%{ transform: translateX(-8px); }
+    75%{ transform: translateX(8px); }
+  }
+
+  /* ---------- GAME SCREEN ---------- */
+
+  .game-eyebrow{
+    font-size: 15px;
+    color: var(--rose-deep);
+    margin: 0 0 6px;
+    font-weight: 600;
+  }
+
+  .game-title{
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(30px, 7vw, 42px);
+    margin: 0 0 6px;
+    color: var(--plum);
+    line-height: 1.15;
+  }
+
+  .game-sub{
+    margin: 0 0 22px;
+    font-size: 15px;
+    color: var(--rose-deep);
+    max-width: 320px;
+  }
+
+  .game-stats{
+    display: flex;
+    gap: 18px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .game-stats span{ color: var(--rose); }
+
+  .board{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    width: 100%;
+    max-width: 340px;
+  }
+
+  .card{
+    aspect-ratio: 1 / 1;
+    position: relative;
+    cursor: pointer;
+    perspective: 800px;
+  }
+
+  .card-inner{
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.5s cubic-bezier(.2,.8,.3,1.15);
+  }
+
+  .card.flipped .card-inner,
+  .card.matched .card-inner{
+    transform: rotateY(180deg);
+  }
+
+  .card-face{
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    backface-visibility: hidden;
+    font-size: 26px;
+  }
+
+  .card-back{
+    background:
+      repeating-linear-gradient(45deg, var(--rose) 0 6px, var(--rose-deep) 6px 12px);
+    border: 2px solid var(--rose-deep);
+  }
+
+  .card-back::after{
+    content: "♥";
+    color: var(--cream);
+    font-size: 20px;
+    opacity: .85;
+  }
+
+  .card-front{
+    background: var(--cream);
+    border: 2px solid var(--blush);
+    transform: rotateY(180deg);
+  }
+
+  .card.matched .card-front{
+    border-color: var(--gold);
+    background: #FFF9EF;
+  }
+
+  .card.shake .card-inner{
+    animation: shakeCard 0.35s;
+  }
+
+  @keyframes shakeCard{
+    0%, 100%{ transform: rotateY(180deg) translateX(0); }
+    25%{ transform: rotateY(180deg) translateX(-6px); }
+    75%{ transform: rotateY(180deg) translateX(6px); }
+  }
+
+  .win-note{
+    margin-top: 22px;
+    font-size: 14px;
+    color: var(--rose-deep);
+    opacity: 0;
+    transition: opacity .4s ease;
+  }
+
+  .win-note.show{ opacity: 1; }
+
+  /* ---------- GREETING SCREEN ---------- */
+
+  .greeting-deco{
+    font-size: 30px;
+    margin-bottom: 4px;
+    letter-spacing: 10px;
+  }
+
+  .greeting-eyebrow{
+    font-size: 14px;
+    color: var(--rose-deep);
+    font-weight: 600;
+    margin: 6px 0 2px;
+  }
+
+  .greeting-title{
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(38px, 10vw, 62px);
+    color: var(--plum);
+    margin: 0 0 4px;
+    line-height: 1.05;
+  }
+
+  .greeting-title em{
+    font-style: italic;
+    color: var(--rose);
+  }
+
+  .greeting-name{
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(24px, 6vw, 32px);
+    color: var(--rose-deep);
+    margin: 0 0 24px;
+  }
+
+  .letter{
+    width: 100%;
+    max-width: 420px;
+    background: #FFFDFB;
+    border: 1px solid var(--blush);
+    border-radius: 18px;
+    padding: 26px 24px;
+    box-shadow: 0 18px 40px -22px rgba(139, 58, 85, 0.45);
+    position: relative;
+  }
+
+  .letter-label{
+    font-size: 12px;
+    color: var(--rose);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .teddy{
+    position: absolute;
+    top: -30px;
+    right: -6px;
+    font-size: 46px;
+    animation: teddyWiggle 2.4s ease-in-out infinite;
+    transform-origin: bottom center;
+  }
+
+  @keyframes teddyWiggle{
+    0%, 100%{ transform: rotate(-8deg) translateY(0); }
+    50%{ transform: rotate(8deg) translateY(-6px); }
+  }
+
+  .letter-text{
+    font-family: var(--font-display);
+    font-size: 19px;
+    line-height: 1.6;
+    color: var(--ink);
+    min-height: 140px;
+    outline: none;
+    text-align: left;
+    white-space: pre-wrap;
+  }
+
+  .letter-text:empty::before{
+    content: "Tulis kata-kata sayangmu di sini...";
+    color: #C7ACB6;
+  }
+
+  .letter-hint{
+    margin-top: 14px;
+    font-size: 12px;
+    color: #B98A9A;
+  }
+
+  .send-btn{
+    margin-top: 26px;
+    background: var(--rose);
+    color: #fff;
+    border: none;
+    padding: 14px 34px;
+    border-radius: 999px;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition: transform .15s ease, background .2s ease;
+  }
+
+  .send-btn:hover{ background: var(--rose-deep); }
+  .send-btn:active{ transform: scale(0.96); }
+
+  .send-btn.sent{
+    background: var(--gold);
+  }
+
+  /* ---------- CELEBRATION EFFECTS ---------- */
+
+  .float-heart{
+    position: fixed;
+    top: 100%;
+    pointer-events: none;
+    font-size: 20px;
+    animation: floatUp linear forwards;
+    z-index: 30;
+  }
+
+  @keyframes floatUp{
+    to{
+      transform: translateY(-115vh) rotate(20deg);
+      opacity: 0;
+    }
+  }
+
+  .confetti-piece{
+    position: fixed;
+    top: -20px;
+    pointer-events: none;
+    border-radius: 2px;
+    animation: confettiFall linear forwards;
+    z-index: 25;
+  }
+
+  @keyframes confettiFall{
+    to{
+      transform: translateY(112vh) rotate(540deg);
+      opacity: 0.9;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .card-inner{ transition: none; }
+    .float-heart, .confetti-piece{ animation: none; display: none; }
+    .teddy{ animation: none; }
+  }
+</style>
+
+<!-- ============ LAYAR 0 : AMPLOP / KUNCI TAHUN LAHIR ============ -->
+<section id="envelope-screen" class="screen">
+  <p class="env-eyebrow">ada surat buat kamu</p>
+  <h1 class="env-title">Sebelum dibuka...</h1>
+
+  <div class="envelope">
+    <div class="envelope-body"></div>
+    <div class="envelope-flap"></div>
+    <div class="envelope-lines">
+      <span></span>
+      <span></span>
+    </div>
+    <div class="envelope-seal">♥</div>
+  </div>
+
+  <div class="env-form">
+    <p class="env-label">Masukkan tahun lahirmu buat buka suratnya</p>
+    <input type="text" inputmode="numeric" maxlength="4" class="year-input" id="year-input" placeholder="YYYY">
+    <p class="env-hint" id="env-hint">Bukan tahun itu, coba lagi ya~</p>
+    <button class="env-btn" id="env-btn">Buka Suratnya</button>
+  </div>
+</section>
+
+<!-- ============ LAYAR 1 : GAME COCOKKAN PASANGAN ============ -->
+<section id="game-screen" class="screen hidden">
+  <p class="game-eyebrow">satu langkah lagi</p>
+  <h1 class="game-title">Cocokkan Pasangan Cintanya</h1>
+  <p class="game-sub">Buka dua kartu, temukan pasangannya. Kalau semua sudah cocok, suratnya kebuka.</p>
+
+  <div class="game-stats">
+    <div>Langkah: <span id="move-count">0</span></div>
+    <div>Cocok: <span id="match-count">0</span>/6</div>
+  </div>
+
+  <div class="board" id="board"></div>
+
+  <p class="win-note" id="win-note">Semua cocok! Sebentar lagi kebuka...</p>
+</section>
+
+<!-- ============ LAYAR 2 : UCAPAN SELAMAT ============ -->
+<section id="greeting-screen" class="screen hidden">
+  <div class="greeting-deco">🤍 🌹 🤍</div>
+  <p class="greeting-eyebrow">untuk kamu</p>
+  <h1 class="greeting-title">Happy <em>Birthday</em></h1>
+  <p class="greeting-name" id="name-slot"></p>
+
+  <div class="letter">
+    <div class="teddy">🧸</div>
+    <span class="letter-label">Surat kecil</span>
+    <div class="letter-text" id="letter-text" contenteditable="false" spellcheck="false"></div>
+  </div>
+
+  <button class="send-btn" id="send-btn">Kirim dengan Cinta 💌</button>
+</section>
+
+<script>
+  document.getElementById('name-slot').textContent = COUPLE_NAME;
+  document.getElementById('letter-text').textContent = DEFAULT_MESSAGE;
+
+  // ---------- LAYAR 0: AMPLOP / TAHUN LAHIR ----------
+  const envelopeScreen = document.getElementById('envelope-screen');
+  const gameScreen = document.getElementById('game-screen');
+  const greetingScreen = document.getElementById('greeting-screen');
+
+  const yearInput = document.getElementById('year-input');
+  const envBtn = document.getElementById('env-btn');
+  const envHint = document.getElementById('env-hint');
+
+  function checkYear(){
+    const val = yearInput.value.trim();
+    if (val === BIRTH_YEAR){
+      envelopeScreen.classList.add('hidden');
+      gameScreen.classList.remove('hidden');
+    } else {
+      envHint.classList.add('show');
+      yearInput.classList.add('shake-anim');
+      setTimeout(() => yearInput.classList.remove('shake-anim'), 400);
+    }
+  }
+
+  envBtn.addEventListener('click', checkYear);
+  yearInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') checkYear();
+  });
+  yearInput.addEventListener('input', () => envHint.classList.remove('show'));
+
+  // ---------- LAYAR 1: GAME ----------
+  const ICONS = ['💖','💍','🌹','💌','🎂','😘'];
+  let deck = [...ICONS, ...ICONS]
+    .map(icon => ({ icon }))
+    .sort(() => Math.random() - 0.5);
+
+  const board = document.getElementById('board');
+  const moveCountEl = document.getElementById('move-count');
+  const matchCountEl = document.getElementById('match-count');
+  const winNote = document.getElementById('win-note');
+
+  let flipped = [];
+  let matched = 0;
+  let moves = 0;
+  let locked = false;
+
+  deck.forEach((item, i) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.dataset.icon = item.icon;
+    card.dataset.index = i;
+    card.innerHTML = `
+      <div class="card-inner">
+        <div class="card-face card-back"></div>
+        <div class="card-face card-front">${item.icon}</div>
+      </div>
+    `;
+    card.addEventListener('click', () => handleFlip(card));
+    board.appendChild(card);
+  });
+
+  function handleFlip(card){
+    if (locked) return;
+    if (card.classList.contains('flipped') || card.classList.contains('matched')) return;
+    if (flipped.length === 2) return;
+
+    card.classList.add('flipped');
+    flipped.push(card);
+
+    if (flipped.length === 2){
+      moves++;
+      moveCountEl.textContent = moves;
+      locked = true;
+
+      const [a, b] = flipped;
+      if (a.dataset.icon === b.dataset.icon){
+        setTimeout(() => {
+          a.classList.add('matched');
+          b.classList.add('matched');
+          matched++;
+          matchCountEl.textContent = matched;
+          flipped = [];
+          locked = false;
+          if (matched === ICONS.length){
+            onWin();
+          }
+        }, 350);
+      } else {
+        a.classList.add('shake');
+        b.classList.add('shake');
+        setTimeout(() => {
+          a.classList.remove('flipped', 'shake');
+          b.classList.remove('flipped', 'shake');
+          flipped = [];
+          locked = false;
+        }, 800);
+      }
+    }
+  }
+
+  function onWin(){
+    winNote.classList.add('show');
+    setTimeout(() => {
+      gameScreen.classList.add('hidden');
+      greetingScreen.classList.remove('hidden');
+      spawnConfetti();
+    }, 1400);
+  }
+
+  // ---------- LAYAR 2: KIRIM + EFEK HATI ----------
+  const sendBtn = document.getElementById('send-btn');
+  sendBtn.addEventListener('click', () => {
+    sendBtn.textContent = 'Terkirim ♥';
+    sendBtn.classList.add('sent');
+    spawnHearts();
+    spawnConfetti(30);
+  });
+
+  function spawnHearts(){
+    const hearts = ['💖','🌹','💌','✨','💕'];
+    for (let i = 0; i < 26; i++){
+      const h = document.createElement('div');
+      h.className = 'float-heart';
+      h.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+      h.style.left = Math.random() * 100 + 'vw';
+      h.style.animationDuration = (2.2 + Math.random() * 1.6) + 's';
+      h.style.fontSize = (16 + Math.random() * 14) + 'px';
+      document.body.appendChild(h);
+      setTimeout(() => h.remove(), 4000);
+    }
+  }
+
+  function spawnConfetti(count = 70){
+    const colors = ['#C1516B', '#D9A441', '#F6C9CE', '#8B3A55', '#FFF4EC'];
+    for (let i = 0; i < count; i++){
+      const c = document.createElement('div');
+      c.className = 'confetti-piece';
+      c.style.left = Math.random() * 100 + 'vw';
+      c.style.width = (6 + Math.random() * 6) + 'px';
+      c.style.height = (10 + Math.random() * 8) + 'px';
+      c.style.background = colors[Math.floor(Math.random() * colors.length)];
+      c.style.animationDuration = (2.6 + Math.random() * 1.8) + 's';
+      c.style.animationDelay = (Math.random() * 0.6) + 's';
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 5200);
+    }
+  }
+</script>
+</body>
+</html>
